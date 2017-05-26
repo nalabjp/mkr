@@ -11,7 +11,7 @@ class App < Sinatra::Base
 
   post '/' do
     params = JSON.parse(request.body.read)
-    action = ACTION.fetch(params['action'].to_sym)
+    action = ACTIONS.fetch(params['action'].to_sym)
 
     unless action
       failure("Not found action: `#{params['action']}`")
