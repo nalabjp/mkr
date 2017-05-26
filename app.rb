@@ -13,9 +13,9 @@ class App < Sinatra::Base
     params = JSON.parse(request.body.read)
     action = ACTION.fetch(params['action'].to_sym)
     if action
-      info("Process `#{params['action']}` acction")
+      info("Process `#{params['action']}` action")
       Mkr.run(action)
-      success("Process `#{params['action']}` acction")
+      success("Process `#{params['action']}` action")
       Mkr.run(action)
       # TODO: notify success?
     else
