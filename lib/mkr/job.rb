@@ -40,10 +40,7 @@ module Mkr
 
         yield
       ensure
-        begin
-          sign_out
-        rescue Capybara::ElementNotFound
-        end
+        sign_out
       end
     end
 
@@ -72,8 +69,6 @@ module Mkr
         @session.find(record_selector).click
         success("Record clock for `:#{@action}`")
       end
-    rescue => e
-      failure('Something happened', e)
     end
 
     def record_selector
