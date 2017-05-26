@@ -18,6 +18,7 @@ module Mkr
       with_signed_in_kot do
         record_clock
       end
+      true
     ensure
       info("Mkr::Job end for #{@user.name}")
     end
