@@ -8,7 +8,7 @@ module Mkr
     end
 
     def logger
-      @logger ||= Logger.instance
+      Logger.instance
     end
   end
 end
