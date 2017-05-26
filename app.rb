@@ -25,9 +25,14 @@ class App < Sinatra::Base
       return
     end
 
-    Mkr.run(action)
-    success("Process `#{params['action']}` action")
-    # TODO: notify success?
+    begin
+      Mkr.run(action)
+      success("Process `#{params['action']}` action")
+      # TODO: notify success?
+    rescue => e
+      failure(e.message, e)
+      raise e
+    end
   end
 
   private
