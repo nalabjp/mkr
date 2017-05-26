@@ -12,19 +12,22 @@ class App < Sinatra::Base
   post '/' do
     params = JSON.parse(request.body.read)
     action = ACTION.fetch(params['action'].to_sym)
-    if action
-      info("Process `#{params['action']}` action")
-      if valid?(action)
-        Mkr.run(action)
-        success("Process `#{params['action']}` action")
-      else
-        failure("Off hours for `#{action}`")
-      end
-      # TODO: notify success?
-    else
+
+    unless action
       failure("Not found action: `#{params['action']}`")
       # TODO: notify failure?
+      return
     end
+
+    info("Process `#{params['action']}` action")
+    unless valid?(action)
+      failure("Off hours for `#{action}`")
+      return
+    end
+
+    Mkr.run(action)
+    success("Process `#{params['action']}` action")
+    # TODO: notify success?
   end
 
   private
