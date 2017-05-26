@@ -21,5 +21,6 @@ class App < Sinatra::Base
     else
       failure("Not found action: `#{params['action']}`")
       # TODO: notify failure?
+    end
   end
 end
