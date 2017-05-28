@@ -1,4 +1,5 @@
 require 'capybara/poltergeist'
+require 'singleton'
 require_relative 'mkr/logger'
 require_relative 'mkr/logging'
 require_relative 'mkr/user'
