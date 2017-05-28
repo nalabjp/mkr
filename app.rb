@@ -15,7 +15,6 @@ class App < Sinatra::Base
 
     unless action
       failure("Not found action: `#{params['action']}`")
-      # TODO: notify failure?
       return
     end
 
@@ -26,11 +25,13 @@ class App < Sinatra::Base
     end
 
     begin
-      Mkr.run(action)
+      user = User.from_env
+      Mkr.run(user, action)
       success("Process `#{params['action']}` action")
-      # TODO: notify success?
+      Notifier.success(user.name, action)
     rescue => e
       failure(e.message, e)
+      Notifier.failure(user.name, action, e)
       raise e
     end
   end
