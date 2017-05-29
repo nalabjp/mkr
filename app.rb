@@ -11,21 +11,16 @@ class App < Sinatra::Base
     params = JSON.parse(request.body.read)
     action = ACTIONS.fetch(params['action'].to_sym)
 
-    unless action
-      Mkr.logger.failure("Not found action: `#{params['action']}`")
-      return
-    end
-
-    Mkr.logger.info("Process `#{params['action']}` action")
+    Mkr.logger.info("Process `:#{action}` action")
     unless valid?(action)
-      Mkr.logger.failure("Off hours for `#{action}`")
+      Mkr.logger.failure("Invalid action: `:#{action}`")
       return
     end
 
     begin
       user = User.from_env
       Mkr.run(user, action)
-      Mkr.logger.success("Process `#{params['action']}` action")
+      Mkr.logger.success("Process `:#{action}` action")
       Notifier.success(user.name, action)
     rescue => e
       Mkr.logger.failure(e.message, e)
@@ -37,7 +32,12 @@ class App < Sinatra::Base
   private
 
   def valid?(action)
-    send("validate_#{action}")
+    validate_action(action) &&
+      send("validate_#{action}")
+  end
+
+  def validate_action(action)
+    ACTIONS.values.include?(action)
   end
 
   def validate_punch_in
