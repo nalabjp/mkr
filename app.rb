@@ -2,8 +2,6 @@ require 'sinatra'
 require_relative 'lib/mkr'
 
 class App < Sinatra::Base
-  include Mkr::Logging
-
   ACTIONS = {
     entered: :punch_in,
     exited: :punch_out
@@ -14,23 +12,23 @@ class App < Sinatra::Base
     action = ACTIONS.fetch(params['action'].to_sym)
 
     unless action
-      failure("Not found action: `#{params['action']}`")
+      Mkr.logger.failure("Not found action: `#{params['action']}`")
       return
     end
 
-    info("Process `#{params['action']}` action")
+    Mkr.logger.info("Process `#{params['action']}` action")
     unless valid?(action)
-      failure("Off hours for `#{action}`")
+      Mkr.logger.failure("Off hours for `#{action}`")
       return
     end
 
     begin
       user = User.from_env
       Mkr.run(user, action)
-      success("Process `#{params['action']}` action")
+      Mkr.logger.success("Process `#{params['action']}` action")
       Notifier.success(user.name, action)
     rescue => e
-      failure(e.message, e)
+      Mkr.logger.failure(e.message, e)
       Notifier.failure(user.name, action, e)
       raise e
     end

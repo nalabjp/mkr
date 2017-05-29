@@ -5,8 +5,6 @@ end
 
 module Mkr
   class Job
-    include Logging
-
     def initialize(user, action)
       @user = user
       @action = action
@@ -14,13 +12,13 @@ module Mkr
     end
 
     def execute
-      info("Mkr::Job begin for #{@user.name}")
+      Mkr.logger.info("Mkr::Job begin for #{@user.name}")
       with_signed_in_kot do
         record_clock
       end
       true
     ensure
-      info("Mkr::Job end for #{@user.name}")
+      Mkr.logger.info("Mkr::Job end for #{@user.name}")
     end
 
     private
@@ -47,7 +45,7 @@ module Mkr
 
     def visit_kot
       @session.visit('https://s3.kingtime.jp/independent/recorder/personal/')
-      success('Visit `s3.kingtime.jp`')
+      Mkr.logger.success('Visit `s3.kingtime.jp`')
     end
 
     def sign_in
@@ -55,20 +53,20 @@ module Mkr
         @session.find('#id').set(@user.id)
         @session.find('#password').set(@user.pw)
         @session.within('.btn-control-outer') { @session.find('.btn-control-inner').click }
-        success('Sign in')
+        Mkr.logger.success('Sign in')
       end
     end
 
     def sign_out
       @session.find('#menu_icon').click
       @session.within('ul#menu') { @session.click_link('ログアウト') }
-      success('Sign out')
+      Mkr.logger.success('Sign out')
     end
 
     def record_clock
       @session.within('ul#buttons') do
         @session.find(record_selector).click
-        success("Record clock for `:#{@action}`")
+        Mkr.logger.success("Record clock for `:#{@action}`")
       end
     end
 
