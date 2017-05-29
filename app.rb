@@ -3,20 +3,20 @@ require_relative 'lib/mkr'
 
 class App < Sinatra::Base
   IFTTT_ACTIONS = {
-    entered: :punch_in,
-    exited: :punch_out
+    'entered' => :punch_in,
+    'exited'  => :punch_out
   }.freeze
 
   post '/' do
     params = JSON.parse(request.body.read)
-    action = IFTTT_ACTIONS.fetch(params['action'].to_sym)
+    action = IFTTT_ACTIONS[params['action']]
 
-    Mkr.logger.info("Process `:#{action}` action")
     unless valid?(action)
-      Mkr.logger.failure("Invalid action: `:#{action}`")
+      Mkr.logger.failure("Invalid parameters: #{params.inspect}")
       return
     end
 
+    Mkr.logger.info("Process `:#{action}` action")
     begin
       user = User.from_env
       Mkr.run(user, action)
