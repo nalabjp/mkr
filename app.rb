@@ -11,9 +11,14 @@ class App < Sinatra::Base
     params = JSON.parse(request.body.read)
     action = IFTTT_ACTIONS[params['action']]
 
-    unless valid?(action)
+    unless valid_action?(action)
       Mkr.logger.failure("Invalid parameters: #{params.inspect}")
       return
+    end
+
+    unless valid_clock?(action)
+      Mkr.logger.failure("Off hour: `:#{action}`")
+      raise "Off hour: `:#{action}`"
     end
 
     Mkr.logger.info("Process `:#{action}` action")
@@ -31,13 +36,12 @@ class App < Sinatra::Base
 
   private
 
-  def valid?(action)
-    validate_action(action) &&
-      send("validate_#{action}")
+  def valid_action?(action)
+    IFTTT_ACTIONS.values.include?(action)
   end
 
-  def validate_action(action)
-    IFTTT_ACTIONS.values.include?(action)
+  def valid_clock?(action)
+    send("validate_#{action}")
   end
 
   def validate_punch_in
