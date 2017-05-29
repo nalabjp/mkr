@@ -2,14 +2,14 @@ require 'sinatra'
 require_relative 'lib/mkr'
 
 class App < Sinatra::Base
-  ACTIONS = {
+  IFTTT_ACTIONS = {
     entered: :punch_in,
     exited: :punch_out
   }.freeze
 
   post '/' do
     params = JSON.parse(request.body.read)
-    action = ACTIONS.fetch(params['action'].to_sym)
+    action = IFTTT_ACTIONS.fetch(params['action'].to_sym)
 
     Mkr.logger.info("Process `:#{action}` action")
     unless valid?(action)
@@ -37,7 +37,7 @@ class App < Sinatra::Base
   end
 
   def validate_action(action)
-    ACTIONS.values.include?(action)
+    IFTTT_ACTIONS.values.include?(action)
   end
 
   def validate_punch_in
