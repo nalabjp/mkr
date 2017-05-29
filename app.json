@@ -1,0 +1,21 @@
+{
+  "name": "MKR",
+  "description": "My KOT Recorder",
+  "repository": "https://github.com/nalabjp/mkr",
+  "env": {
+    "KOT_ID": {
+      "description": "Your KOT ID"
+    },
+    "KOT_PW": {
+      "description": "Your KOT Password"
+    },
+    "USER_NAME": {
+      "description": "Your name (Optional)",
+      "required": false
+    },
+    "SLACK_WEBHOOK_URL": {
+      "description": "Slack webhook URL (Optional)",
+      "required": false
+    }
+  }
+}
