@@ -17,10 +17,10 @@ module Mkr
       @logger.info(extra) if extra
     end
 
-    def failure(message, extra: nil)
+    def failure(msg_or_err)
       @failure = true
-      @logger.error("[Failure] #{message}")
-      @logger.error(extra) if extra
+      msg_or_err = "[Failure] #{msg_or_err}" unless msg_or_err.is_a?(Exception)
+      @logger.error(msg_or_err)
     end
 
     def success?
