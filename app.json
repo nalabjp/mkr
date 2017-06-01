@@ -17,5 +17,10 @@
       "description": "Slack webhook URL (Optional)",
       "required": false
     }
-  }
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/stomita/heroku-buildpack-phantomjs.git"
+    }
+  ]
 }
