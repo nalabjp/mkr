@@ -55,6 +55,8 @@ module Mkr
         @session.within('.btn-control-outer') { @session.find('.btn-control-inner').click }
         Mkr.logger.success('Sign in')
       end
+    rescue Capybara::ElementNotFound => e
+      Mkr.logger.error(e)
     end
 
     def sign_out
