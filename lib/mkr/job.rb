@@ -39,7 +39,7 @@ module Mkr
 
         yield
       ensure
-        sign_out
+        clear_session
       end
     end
 
@@ -59,10 +59,9 @@ module Mkr
       Mkr.logger.error(e)
     end
 
-    def sign_out
-      @session.find('#menu_icon').click
-      @session.within('ul#menu') { @session.click_link('ログアウト') }
-      Mkr.logger.success('Sign out')
+    def clear_session
+      @session.reset!
+      Mkr.logger.success('Clear session')
     end
 
     def record_clock
