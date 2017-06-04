@@ -12,9 +12,8 @@ module Mkr
       @logger.info(message)
     end
 
-    def success(message, extra: nil)
+    def success(message)
       @logger.info("[Success] #{message}")
-      @logger.info(extra) if extra
     end
 
     def failure(msg_or_err)
