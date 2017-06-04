@@ -46,7 +46,7 @@ class App < Sinatra::Base
 
   def validate_punch_in
     now = Time.now
-    now < Time.local(now.year, now.month, now.day, 15, 0)
+    now < Time.local(now.year, now.month, now.day, 13, 0)
   end
 
   def validate_punch_out
