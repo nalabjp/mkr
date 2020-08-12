@@ -44,7 +44,7 @@ module Mkr
       end
 
       def success_attachment(user_name, action)
-        msg = "`#{user_name}`の`#{punch_text(action)}`を打刻しました！"
+        msg = "`#{user_name}` の `#{punch_text(action)}` を打刻しました！"
 
         {
           fallback: msg,
@@ -60,7 +60,7 @@ module Mkr
       end
 
       def failure_attatchment(user_name, action, exception)
-        msg = "`#{user_name}`の`#{punch_text(action)}`を打刻...できませんでした..."
+        msg = "`#{user_name}` の `#{punch_text(action)}` を打刻...できませんでした..."
 
         {
           fallback: msg,
