@@ -13,7 +13,7 @@ module Mkr
 
     def execute
       Mkr.logger.info("Mkr::Job begin for #{@user.name}")
-      with_signed_in_kot do
+      with_signed_in_mf_attendance do
         record_clock
       end
       true
@@ -31,8 +31,8 @@ module Mkr
       end
     end
 
-    def with_signed_in_kot
-      visit_kot
+    def with_signed_in_mf_attendance
+      visit_mf_attendance
 
       begin
         sign_in
@@ -43,16 +43,17 @@ module Mkr
       end
     end
 
-    def visit_kot
-      @session.visit('https://s3.kingtime.jp/independent/recorder/personal/')
-      Mkr.logger.success('Visit `s3.kingtime.jp`')
+    def visit_mf_attendance
+      @session.visit('https://attendance.moneyforward.com/employee_session/new')
+      Mkr.logger.success('Visit `attendance.moneyforward.com`')
     end
 
     def sign_in
-      @session.within('#modal_window') do
-        @session.find('#id').set(@user.id)
-        @session.find('#password').set(@user.pw)
-        @session.within('.btn-control-outer') { @session.find('.btn-control-inner').click }
+      @session.within('form') do
+        @session.find('#employee_session_form_office_account_name').set(@user.company_id)
+        @session.find('#employee_session_form_account_name_or_email').set(@user.id)
+        @session.find('#employee_session_form_password').set(@user.pw)
+        @session.find('input[type="submit"]').click
         Mkr.logger.success('Sign in')
       end
     rescue Capybara::ElementNotFound => e
@@ -65,18 +66,18 @@ module Mkr
     end
 
     def record_clock
-      @session.within('ul#buttons') do
-        @session.find(record_selector).click
+      @session.within('ul.attendance-card-time-stamp-list') do
+        @session.all('li')[record_selector_index].click
         Mkr.logger.success("Record clock for `:#{@action}`")
       end
     end
 
-    def record_selector
+    def record_selector_index
       case @action
       when :punch_in
-        '.record-btn-inner.record-clock-in'
+        0
       when :punch_out
-        '.record-btn-inner.record-clock-out'
+        1
       end
     end
   end
