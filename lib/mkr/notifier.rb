@@ -27,18 +27,18 @@ module Mkr
 
       def punch_text(action)
         case action
-        when :punch_in
+        when :clock_in
           '出勤'
-        when :punch_out
+        when :clock_out
           '退勤'
         end
       end
 
       def punch_emoji(action)
         case action
-        when :punch_in
+        when :clock_in
           ':office::runner::dash:'
-        when :punch_out
+        when :clock_out
           ':runner::dash::office:'
         end
       end

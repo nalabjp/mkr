@@ -3,8 +3,8 @@ require_relative 'lib/mkr'
 
 class App < Sinatra::Base
   IFTTT_ACTIONS = {
-    'entered' => :punch_in,
-    'exited'  => :punch_out
+    'entered' => :clock_in,
+    'exited'  => :clock_out
   }.freeze
 
   post '/' do
@@ -44,12 +44,12 @@ class App < Sinatra::Base
     send("validate_#{action}")
   end
 
-  def validate_punch_in
+  def validate_clock_in
     now = Time.now
     now < Time.local(now.year, now.month, now.day, 13, 0)
   end
 
-  def validate_punch_out
+  def validate_clock_out
     now = Time.now
     Time.local(now.year, now.month, now.day, 15, 0) <= now
   end

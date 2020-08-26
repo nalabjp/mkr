@@ -1,5 +1,4 @@
 require 'singleton'
-require 'capybara/poltergeist'
 require 'slack-notifier'
 require_relative 'mkr/logger'
 require_relative 'mkr/user'

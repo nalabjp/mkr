@@ -1,13 +1,14 @@
 {
   "name": "MKR",
-  "description": "My KOT Recorder",
+  "description": "My Kintai Recorder",
   "repository": "https://github.com/nalabjp/mkr",
   "env": {
-    "KOT_ID": {
-      "description": "Your KOT ID"
+    "MF_ATTENDANCE_API_TOKEN": {
+      "description": "Your MF Attendance API token"
     },
-    "KOT_PW": {
-      "description": "Your KOT Password"
+    "TZ": {
+      "description": "Time zone",
+      "value": "Asia/Tokyo"
     },
     "USER_NAME": {
       "description": "Your name (Optional)",
@@ -21,9 +22,6 @@
   "buildpacks": [
     {
       "url": "heroku/ruby"
-    },
-    {
-      "url": "https://github.com/stomita/heroku-buildpack-phantomjs.git"
     }
   ]
 }
