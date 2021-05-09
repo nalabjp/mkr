@@ -23,7 +23,7 @@ class App < Sinatra::Base
 
     Mkr.logger.info("Process `:#{action}` action")
     begin
-      user = Mkr::User.from_env
+      user = Mkr::User.new
       Mkr.run(user, action)
       Mkr.logger.success("Process `:#{action}` action")
       Mkr::Notifier.success(user.name, action)

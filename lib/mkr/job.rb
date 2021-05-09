@@ -28,7 +28,7 @@ module Mkr
       req = Net::HTTP::Post.new(uri.request_uri)
       req["Content-Type"] = "application/json"
       # generate from https://attendance.moneyforward.com/my_page/settings/employee_api_token
-      req["Authorization"] = "Token #{ENV['MF_ATTENDANCE_API_TOKEN']}"
+      req["Authorization"] = "Token #{@user.api_token}"
       req.body = payload.to_json
       res = http.request(req)
 
