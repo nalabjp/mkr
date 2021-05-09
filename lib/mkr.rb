@@ -1,3 +1,4 @@
+require 'json'
 require 'singleton'
 require 'slack-notifier'
 require_relative 'mkr/logger'
@@ -7,12 +8,17 @@ require_relative 'mkr/notifier'
 
 module Mkr
   class << self
-    def run(user, action)
-      Job.new(user, action).execute
+    def run(action)
+      Job.new(Mkr::User.new, action).execute
     end
 
     def logger
       Logger.instance
+    end
+
+    private
+
+    def execute(user, action)
     end
   end
 end

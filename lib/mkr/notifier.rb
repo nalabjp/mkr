@@ -60,7 +60,7 @@ module Mkr
       end
 
       def failure_attatchment(user_name, action, exception)
-        msg = "`#{user_name}` の `#{punch_text(action)}` を打刻...できませんでした..."
+        msg = "`#{user_name}` の `#{punch_text(action)}` が打刻できませんでした..."
 
         {
           fallback: msg,

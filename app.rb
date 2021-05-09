@@ -9,35 +9,35 @@ class App < Sinatra::Base
 
   post '/' do
     params = JSON.parse(request.body.read)
-    action = IFTTT_ACTIONS[params['action']]
+    action = nil
 
-    unless valid_action?(action)
-      Mkr.logger.failure("Invalid parameters: #{params.inspect}")
-      return
+    if card_action?(params['action'])
+      action = params['action'].to_sym
+    else
+      unless valid_ifttt_action?(params['action'])
+        Mkr.logger.failure("Invalid parameters: #{params.inspect}")
+        return
+      end
+
+      unless valid_clock?(action)
+        Mkr.logger.failure("Off hour: `:#{action}`")
+        raise "Off hour: `:#{action}`"
+      end
+
+      action = IFTTT_ACTIONS[params['action']]
     end
 
-    unless valid_clock?(action)
-      Mkr.logger.failure("Off hour: `:#{action}`")
-      raise "Off hour: `:#{action}`"
-    end
-
-    Mkr.logger.info("Process `:#{action}` action")
-    begin
-      user = Mkr::User.new
-      Mkr.run(user, action)
-      Mkr.logger.success("Process `:#{action}` action")
-      Mkr::Notifier.success(user.name, action)
-    rescue => e
-      Mkr.logger.failure(e)
-      Mkr::Notifier.failure(user.name, action, e)
-      raise e
-    end
+    Mkr.run(action)
   end
 
   private
 
-  def valid_action?(action)
-    IFTTT_ACTIONS.values.include?(action)
+  def card_action?(action)
+    action == 'card'
+  end
+
+  def valid_ifttt_action?(action)
+    IFTTT_ACTIONS.keys.include?(action)
   end
 
   def valid_clock?(action)
